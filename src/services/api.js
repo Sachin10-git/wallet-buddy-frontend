@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://wallet-buddy-nuor.onrender.com",
+  baseURL: "https://wallet-buddy-nuor.onrender.com/api",
 });
 
 // 🔥 Add interceptor (AUTO attach token)
