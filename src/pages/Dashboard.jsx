@@ -12,6 +12,7 @@ import {
 import Chart from "../components/Chart";
 import ExpenseForm from "../components/ExpenseForm";
 import DailyChart from "../components/DailyChart";
+import ReportGenerator from "../components/ReportGenerator";
 
 export default function Dashboard() {
   const [expenses, setExpenses] = useState([]);
@@ -208,7 +209,19 @@ const matchesDate =
         <div className="bg-white p-5 rounded-2xl shadow-md mb-6">
           <ExpenseForm onAdd={refreshData} />
         </div>
+        <div className="bg-white p-5 rounded-2xl shadow-md mb-6">
 
+  <h3 className="text-lg font-semibold mb-3">
+    Reports
+  </h3>
+
+  <ReportGenerator
+    expenses={expenses}
+    summary={summary}
+    monthlyTotal={monthlyTotal}
+  />
+
+</div>
         {loading ? (
           <p>Loading...</p>
         ) : (
@@ -331,7 +344,7 @@ const matchesDate =
                   Category Breakdown
                 </h3>
 
-                <div className="w-full">
+                <div id="pie-chart-container" className="w-full">
   <Chart data={analytics} />
 </div>
               </div>
@@ -343,11 +356,15 @@ const matchesDate =
                   Daily Spending Trend
                 </h3>
 
-                {dailyData.length > 0 ? (
-                  <DailyChart data={dailyData} />
-                ) : (
-                  <p>No daily data</p>
-                )}
+                 <div id="daily-chart-container">
+
+    {dailyData.length > 0 ? (
+      <DailyChart data={dailyData} />
+    ) : (
+      <p>No daily data</p>
+    )}
+
+  </div>
               </div>
 
             </div>
