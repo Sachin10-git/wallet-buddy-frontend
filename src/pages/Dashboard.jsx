@@ -20,8 +20,6 @@ export default function Dashboard() {
   const [summary, setSummary] = useState(null);
   const [dailyData, setDailyData] = useState([]);
   const [monthlyTotal, setMonthlyTotal] = useState(0);
-
-  // 🔥 NEW STATES
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedDate, setSelectedDate] = useState("");
@@ -39,19 +37,20 @@ export default function Dashboard() {
     try {
       setLoading(true);
 
-      const [expRes, smartRes, dailyRes, monthlyRes] = await Promise.all([
-        getExpenses(),
-        getSmartAnalytics(),
-        getDailyAnalytics(),
-        getMonthlyTotal(),
-      ]);
+      const [expRes, smartRes, dailyRes, monthlyRes] =
+  await Promise.all([
+    getExpenses(),
+    getSmartAnalytics(),
+    getDailyAnalytics(),
+    getMonthlyTotal(),
+  ]);
 
-      setExpenses(expRes.data);
-      setAnalytics(smartRes.data.categories);
-      setSummary(smartRes.data);
+setExpenses(expRes.data);
+setAnalytics(smartRes.data.categories);
+setSummary(smartRes.data);
 
-      setDailyData(dailyRes.data);
-      setMonthlyTotal(monthlyRes.data.total);
+setDailyData(dailyRes.data);
+setMonthlyTotal(monthlyRes.data.total);
     } catch (err) {
       console.error("Error fetching data:", err);
     } finally {
@@ -144,10 +143,10 @@ const matchesDate =
     >
 
       {/* GLASS WRAPPER */}
-      <div className="bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-2xl">
+      <div className="bg-white/90 backdrop-blur-md rounded-3xl p-4 sm:p-6 shadow-2xl">
 
         {/* HEADER */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
 
           <div className="flex items-center gap-3">
             <img src="/logo.png" alt="logo" className="w-10 h-10" />
@@ -168,7 +167,7 @@ const matchesDate =
 
         {/* CARDS */}
         {summary && (
-          <div className="grid grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
 
             <div className="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition">
               <p className="text-gray-500">Total Spent</p>
@@ -225,7 +224,7 @@ const matchesDate =
         {loading ? (
           <p>Loading...</p>
         ) : (
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
             {/* EXPENSES */}
             <div className="bg-white p-5 rounded-2xl shadow-md">
@@ -235,7 +234,7 @@ const matchesDate =
               </h3>
 
               {/* 🔍 SEARCH + FILTER */}
-              <div className="flex gap-3 mb-4">
+              <div className="flex flex-col md:flex-row gap-3 mb-4">
 
                 {/* SEARCH */}
                 <input
@@ -281,9 +280,19 @@ const matchesDate =
               ) : (
                 filteredExpenses.map((e) => (
                   <div
-                    key={e._id}
-                    className="flex justify-between items-center border-b py-2"
-                  >
+  key={e._id}
+  className="
+    flex
+    flex-col
+    sm:flex-row
+    justify-between
+    items-start
+    sm:items-center
+    border-b
+    py-3
+    gap-2
+  "
+>
 
                     <div>
   <p className="capitalize font-medium text-lg">
@@ -308,7 +317,7 @@ const matchesDate =
   </p>
 </div>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-wrap items-center gap-3">
 
                       <span className="font-semibold">
                         ₹{e.amount}
@@ -351,20 +360,17 @@ const matchesDate =
 
               {/* DAILY */}
               <div className="bg-white p-5 rounded-2xl shadow-md">
-
                 <h3 className="text-lg font-semibold mb-4">
-                  Daily Spending Trend
-                </h3>
+  Daily Spending Trend
+</h3>
 
-                 <div id="daily-chart-container">
-
-    {dailyData.length > 0 ? (
-      <DailyChart data={dailyData} />
-    ) : (
-      <p>No daily data</p>
-    )}
-
-  </div>
+<div id="daily-chart-container">
+  {dailyData.length > 0 ? (
+    <DailyChart data={dailyData} />
+  ) : (
+    <p>No daily data</p>
+  )}
+</div>
               </div>
 
             </div>

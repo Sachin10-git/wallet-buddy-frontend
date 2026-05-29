@@ -25,8 +25,9 @@ export const updateExpense = (id, data) => API.put(`/expenses/${id}`, data);
 export const getAnalytics = () => API.get("/analytics/categories");
 export const getSmartAnalytics = () => API.get("/analytics/smart");
 
-// 🔥 NEW (daily + monthly)
 export const getDailyAnalytics = () => API.get("/analytics/daily");
+export const getWeeklyAnalytics = () => API.get("/analytics/weekly");
+export const getMonthlyTrendAnalytics = () => API.get("/analytics/monthly-trend");
 export const getMonthlyTotal = () => API.get("/analytics/monthly");
 
 export default API;
