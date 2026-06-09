@@ -76,24 +76,53 @@ setMonthlyTotal(monthlyRes.data.total);
   };
 
   const handleEdit = async (expense) => {
-    const newAmount = prompt("Enter new amount", expense.amount);
-    const newCategory = prompt("Enter new category", expense.category);
-    const newDesc = prompt("Enter description", expense.description);
+  const newAmount = prompt(
+    "Enter new amount",
+    expense.amount
+  );
 
-    if (!newAmount || !newCategory) return;
+  const newCategory = prompt(
+    "Enter new category",
+    expense.category
+  );
 
-    try {
-      await updateExpense(expense._id, {
-        amount: newAmount,
-        category: newCategory,
-        description: newDesc,
-      });
+  const newDesc = prompt(
+    "Enter description",
+    expense.description || ""
+  );
 
-      fetchAll();
-    } catch (err) {
-      console.error("Update failed", err);
-    }
-  };
+  const currentExpenseDate =
+    expense.expenseDate
+      ? new Date(expense.expenseDate)
+          .toISOString()
+          .split("T")[0]
+      : "";
+
+  const newExpenseDate = prompt(
+    "Enter expense date (YYYY-MM-DD)",
+    currentExpenseDate
+  );
+
+  if (
+    !newAmount ||
+    !newCategory ||
+    !newExpenseDate
+  )
+    return;
+
+  try {
+    await updateExpense(expense._id, {
+      amount: Number(newAmount),
+      category: newCategory,
+      description: newDesc,
+      expenseDate: newExpenseDate,
+    });
+
+    fetchAll();
+  } catch (err) {
+    console.error("Update failed", err);
+  }
+};
 
   // 🔍 FILTERED EXPENSES
   const filteredExpenses = expenses.filter((expense) => {
@@ -116,7 +145,9 @@ setMonthlyTotal(monthlyRes.data.total);
       selectedCategory.toLowerCase();
 
   // 📅 date filter
-const d = new Date(expense.createdAt);
+const d = new Date(
+  expense.expenseDate || expense.createdAt
+);
 
 const expenseDate =
   d.getFullYear() +
@@ -307,14 +338,15 @@ const matchesDate =
 
   {/* 🔥 DATE + TIME */}
   <p className="text-xs text-gray-400 mt-1">
-    {new Date(e.createdAt).toLocaleString("en-IN", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-    })}
-  </p>
+  Expense Date:{" "}
+  {new Date(
+    e.expenseDate || e.createdAt
+  ).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  })}
+</p>
 </div>
 
                     <div className="flex flex-wrap items-center gap-3">
