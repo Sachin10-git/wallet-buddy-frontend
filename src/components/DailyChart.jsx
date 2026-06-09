@@ -9,10 +9,9 @@ import {
 } from "recharts";
 
 export default function DailyChart({ data }) {
-
   const formattedData = data
+    .filter((item) => item && item._id)
     .map((item) => {
-
       const [day, month, year] =
         item._id.split("-");
 
@@ -22,7 +21,7 @@ export default function DailyChart({ data }) {
           month - 1,
           day
         ),
-        date: item._id,
+        date: item._id, // ✅ IMPORTANT
         total: item.total,
       };
     })
@@ -37,7 +36,6 @@ export default function DailyChart({ data }) {
       height={250}
     >
       <LineChart data={formattedData}>
-
         <CartesianGrid strokeDasharray="3 3" />
 
         <XAxis dataKey="date" />
@@ -57,7 +55,6 @@ export default function DailyChart({ data }) {
           stroke="#10b981"
           strokeWidth={3}
         />
-
       </LineChart>
     </ResponsiveContainer>
   );
