@@ -111,18 +111,14 @@ export default function ReportGenerator({
       ]],
 
       body: expenses.map((e) => [
-        new Date(
-          e.createdAt
-        ).toLocaleString("en-IN"),
+  new Date(
+    e.expenseDate
+  ).toLocaleDateString("en-IN"),
 
-        e.category,
-
-        e.description || "-",
-
-        `Rs. ${Number(
-          e.amount
-        ).toLocaleString("en-IN")}`,
-      ]),
+  e.category,
+  e.description || "-",
+  `Rs. ${Number(e.amount).toLocaleString("en-IN")}`,
+]),
 
       styles: {
         font: "helvetica",
@@ -149,16 +145,18 @@ export default function ReportGenerator({
       return;
     }
 
-    const filteredExpenses =
-      expenses.filter((expense) => {
+    const filteredExpenses = expenses.filter((expense) => {
+  const expenseDate = new Date(expense.expenseDate);
 
-        const date =
-          new Date(expense.createdAt)
-            .toISOString()
-            .split("T")[0];
+  const formattedDate =
+    expenseDate.getFullYear() +
+    "-" +
+    String(expenseDate.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(expenseDate.getDate()).padStart(2, "0");
 
-        return date === selectedDate;
-      });
+  return formattedDate === selectedDate;
+});
 
     const total =
       filteredExpenses.reduce(
